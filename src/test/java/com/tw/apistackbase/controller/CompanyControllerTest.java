@@ -59,4 +59,21 @@ public class CompanyControllerTest {
         assertEquals(1, jsonObject.getJSONArray("employees")
                 .getJSONObject(0).getInt("id"));
     }
+
+    @Test
+    public void shouldReturnAllEmployeesOfACompany() throws Exception {
+
+        MvcResult mvcResult = this.mockMvc.perform(get("/companies/1/employees"))
+                .andExpect(status().isOk())
+                .andReturn();
+
+        JSONArray jsonArray = new JSONArray(mvcResult.getResponse().getContentAsString());
+        assertEquals(1, jsonArray.getJSONObject(0).getInt("id"));
+        assertEquals("zhangsan", jsonArray.getJSONObject(0).getString("name"));
+        assertEquals(20, jsonArray.getJSONObject(0).getInt("age"));
+        assertEquals("male", jsonArray.getJSONObject(0).getString("gender"));
+        assertEquals(8888, jsonArray.getJSONObject(0).getDouble("salary"));
+    }
+
+
 }

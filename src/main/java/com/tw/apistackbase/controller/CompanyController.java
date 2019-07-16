@@ -33,4 +33,11 @@ public class CompanyController {
         return ResponseEntity.ok().body(company);
     }
 
+    @GetMapping("/{id}/employees")
+    public ResponseEntity getEmployees(@PathVariable int id) {
+        Company company = companies.get(id);
+        List<Employee> employees = company.getEmployees();
+        return ResponseEntity.ok().body(employees);
+    }
+
 }
