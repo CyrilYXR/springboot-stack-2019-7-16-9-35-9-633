@@ -62,4 +62,20 @@ public class EmployeeControllerTest {
         assertEquals("male", jsonObject.getString("gender"));
         assertEquals(8888, jsonObject.getDouble("salary"));
     }
+
+    @Test
+    public void shouldReturnTheEmployeesPage() throws Exception {
+
+        MvcResult mvcResult = this.mockMvc.perform(get("/employees?page=1&pageSize=5"))
+                .andExpect(status().isOk())
+                .andReturn();
+
+        JSONArray jsonArray = new JSONArray(mvcResult.getResponse().getContentAsString());
+        assertEquals(1, jsonArray.getJSONObject(0).getInt("id"));
+        assertEquals("lisi", jsonArray.getJSONObject(0).getString("name"));
+        assertEquals(20, jsonArray.getJSONObject(0).getInt("age"));
+        assertEquals("male", jsonArray.getJSONObject(0).getString("gender"));
+        assertEquals(8888, jsonArray.getJSONObject(0).getDouble("salary"));
+        assertEquals(2, jsonArray.length());
+    }
 }
