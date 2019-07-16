@@ -94,4 +94,25 @@ public class EmployeeControllerTest {
         assertEquals(8888, jsonArray.getJSONObject(0).getDouble("salary"));
         assertEquals(2, jsonArray.length());
     }
+
+    @Test
+    public void shouldAddANewEmployee() throws Exception {
+
+        Employee employee = new Employee(3, "xiaohong", 21, "female", 10000);
+
+        this.mockMvc.perform(post("/employees")
+                .contentType(MediaType.APPLICATION_JSON).content(JSON.toJSONString(employee)))
+                .andExpect(status().isCreated());
+
+        MvcResult mvcResult = this.mockMvc.perform(get("/employees/3"))
+                .andExpect(status().isOk())
+                .andReturn();
+
+        JSONObject jsonObject = new JSONObject(mvcResult.getResponse().getContentAsString());
+        assertEquals(3, jsonObject.getInt("id"));
+        assertEquals("xiaohong", jsonObject.getString("name"));
+        assertEquals(21, jsonObject.getInt("age"));
+        assertEquals("female", jsonObject.getString("gender"));
+        assertEquals(10000, jsonObject.getDouble("salary"));
+    }
 }
