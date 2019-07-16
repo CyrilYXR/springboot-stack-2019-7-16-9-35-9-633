@@ -72,4 +72,15 @@ public class EmployeeController {
         });
         return ResponseEntity.ok().build();
     }
+
+    @DeleteMapping("/{id}")
+    public ResponseEntity delete(@PathVariable int id){
+        for(Employee employee : employees){
+            if(employee.getId() == id) {
+                employees.remove(employee);
+                break;
+            }
+        }
+        return ResponseEntity.ok().build();
+    }
 }

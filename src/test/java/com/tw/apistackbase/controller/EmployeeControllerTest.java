@@ -136,4 +136,17 @@ public class EmployeeControllerTest {
         assertEquals("female", jsonObject.getString("gender"));
         assertEquals(10000, jsonObject.getDouble("salary"));
     }
+
+    @Test
+    public void shouldDeleteTheEmployee() throws Exception {
+
+        this.mockMvc.perform(delete("/employees/1"))
+                .andExpect(status().isOk());
+
+        MvcResult mvcResult = this.mockMvc.perform(get("/employees"))
+                .andExpect(status().isOk()).andReturn();
+        JSONArray jsonArray = new JSONArray(mvcResult.getResponse().getContentAsString());
+        assertEquals(1, jsonArray.length());
+
+    }
 }
