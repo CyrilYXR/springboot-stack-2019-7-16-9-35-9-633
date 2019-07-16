@@ -62,4 +62,10 @@ public class CompanyController {
         return ResponseEntity.status(HttpStatus.CREATED).build();
     }
 
+    @PutMapping("/{id}")
+    public ResponseEntity update(@PathVariable int id, @RequestBody Company company){
+        this.companies.put(id, company);
+        return ResponseEntity.ok().build();
+    }
+
 }

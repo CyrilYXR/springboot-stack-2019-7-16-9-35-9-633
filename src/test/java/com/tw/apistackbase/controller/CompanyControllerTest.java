@@ -121,4 +121,27 @@ public class CompanyControllerTest {
 
     }
 
+    @Test
+    public void shouldUpdateTheCompany() throws Exception {
+
+        List<Employee> employees = new ArrayList<>();
+        employees.add(new Employee(2, "zhangsan", 20, "male", 8888));
+        Company company = new Company(1, "taobao", 2000, employees);
+
+        this.mockMvc.perform(put("/companies/1")
+                .contentType(MediaType.APPLICATION_JSON).content(JSON.toJSONString(company)))
+                .andExpect(status().isOk());
+
+        MvcResult mvcResult = this.mockMvc.perform(get("/companies/1"))
+                .andExpect(status().isOk())
+                .andReturn();
+
+        JSONObject jsonObject = new JSONObject(mvcResult.getResponse().getContentAsString());
+        assertEquals(1, jsonObject.getInt("id"));
+        assertEquals("taobao", jsonObject.getString("companyName"));
+        assertEquals(2000, jsonObject.getInt("employeesNumber"));
+        assertEquals(2, jsonObject.getJSONArray("employees")
+                .getJSONObject(0).getInt("id"));
+
+    }
 }
