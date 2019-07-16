@@ -30,6 +30,8 @@ repositories {
 dependencies {
     compile 'org.springframework.boot:spring-boot-starter-actuator'
     compile 'org.springframework.boot:spring-boot-starter-web'
+    compile 'org.json:json:20180813'
+    compile 'com.alibaba:fastjson:1.2.47'
 
     testCompile 'org.springframework.boot:spring-boot-starter-test'
 

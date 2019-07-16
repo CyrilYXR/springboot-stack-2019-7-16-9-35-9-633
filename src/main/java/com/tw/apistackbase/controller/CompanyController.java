@@ -1,15 +1,9 @@
 package com.tw.apistackbase.controller;
 
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 @RestController
 @RequestMapping("/companies")
@@ -20,12 +14,17 @@ public class CompanyController {
         List<Employee> employees = new ArrayList<>();
         employees.add(new Employee(1, "zhangsan", 20, "male", 8888));
         companies.put(1, new Company(1, "alibaba", 200, employees));
+        companies.put(2, new Company(2, "baidu", 200, employees));
+        companies.put(3, new Company(3, "google", 200, employees));
+        companies.put(4, new Company(4, "oocl", 200, employees));
+        companies.put(5, new Company(5, "cargosmall", 200, employees));
+        companies.put(6, new Company(6, "aaa", 200, employees));
     }
 
-    @GetMapping
-    public ResponseEntity getAll() {
-        return ResponseEntity.ok().body(companies.values());
-    }
+//    @GetMapping
+//    public ResponseEntity getAll() {
+//        return ResponseEntity.ok().body(companies.values());
+//    }
 
     @GetMapping("/{id}")
     public ResponseEntity get(@PathVariable int id) {
@@ -38,6 +37,28 @@ public class CompanyController {
         Company company = companies.get(id);
         List<Employee> employees = company.getEmployees();
         return ResponseEntity.ok().body(employees);
+    }
+
+    @GetMapping
+    public ResponseEntity getCompaniesByPage(@RequestParam(name = "page", required = false) Integer page,
+                                             @RequestParam(name = "pageSize", required = false) Integer pageSize) {
+
+        if(page == null && pageSize == null) {
+            // get all companies list
+            return ResponseEntity.ok().body(companies.values());
+        }
+
+        List<Company> companyPage = new ArrayList<>();
+        for(int i=(page-1)*pageSize; i<companies.size() && i<pageSize+(page-1)*pageSize; i++) {
+            companyPage.add(companies.get(i+1));
+        }
+        return ResponseEntity.ok().body(companyPage);
+    }
+
+    @PostMapping
+    public ResponseEntity add(@RequestBody Company company){
+        this.companies.put(company.getId(), company);
+        return ResponseEntity.ok().build();
     }
 
 }
