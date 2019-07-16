@@ -1,5 +1,6 @@
 package com.tw.apistackbase.controller;
 
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -58,7 +59,7 @@ public class CompanyController {
     @PostMapping
     public ResponseEntity add(@RequestBody Company company){
         this.companies.put(company.getId(), company);
-        return ResponseEntity.ok().build();
+        return ResponseEntity.status(HttpStatus.CREATED).build();
     }
 
 }

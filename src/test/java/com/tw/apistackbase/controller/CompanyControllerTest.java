@@ -20,6 +20,7 @@ import java.util.List;
 
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 import static org.hamcrest.Matchers.containsString;
@@ -107,7 +108,7 @@ public class CompanyControllerTest {
 
         this.mockMvc.perform(post("/companies")
                 .contentType(MediaType.APPLICATION_JSON).content(JSON.toJSONString(company)))
-                .andExpect(status().isOk())
+                .andExpect(status().isCreated())
                 .andReturn();
 
         MvcResult mvcResult = this.mockMvc.perform(get("/companies"))
@@ -119,4 +120,5 @@ public class CompanyControllerTest {
         assertEquals(7, jsonArray.length());
 
     }
+
 }
