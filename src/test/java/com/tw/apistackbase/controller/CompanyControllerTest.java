@@ -1,6 +1,7 @@
 package com.tw.apistackbase.controller;
 
 import org.json.JSONArray;
+import org.json.JSONObject;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -42,5 +43,20 @@ public class CompanyControllerTest {
         assertEquals(1, jsonArray.getJSONObject(0).getJSONArray("employees")
                 .getJSONObject(0).getInt("id"));
 
+    }
+
+    @Test
+    public void shouldReturnACompanyIdIs1() throws Exception {
+
+        MvcResult mvcResult = this.mockMvc.perform(get("/companies/1"))
+                .andExpect(status().isOk())
+                .andReturn();
+
+        JSONObject jsonObject = new JSONObject(mvcResult.getResponse().getContentAsString());
+        assertEquals(1, jsonObject.getInt("id"));
+        assertEquals("alibaba", jsonObject.getString("companyName"));
+        assertEquals(200, jsonObject.getInt("employeesNumber"));
+        assertEquals(1, jsonObject.getJSONArray("employees")
+                .getJSONObject(0).getInt("id"));
     }
 }

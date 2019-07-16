@@ -27,4 +27,10 @@ public class CompanyController {
         return ResponseEntity.ok().body(companies.values());
     }
 
+    @GetMapping("/{id}")
+    public ResponseEntity get(@PathVariable int id) {
+        Company company = companies.get(id);
+        return ResponseEntity.ok().body(company);
+    }
+
 }
