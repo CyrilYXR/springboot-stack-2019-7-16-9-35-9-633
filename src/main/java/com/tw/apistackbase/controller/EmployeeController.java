@@ -5,6 +5,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @RestController()
 @RequestMapping("/employees")
@@ -27,13 +28,28 @@ public class EmployeeController {
         return ResponseEntity.ok().body(e);
     }
 
+//    @GetMapping
+//    public ResponseEntity getAll(@RequestParam(name = "page", required = false) Integer page,
+//                                 @RequestParam(name = "pageSize", required = false) Integer pageSize){
+//        if(page == null && pageSize == null) {
+//            return ResponseEntity.ok().body(employees);
+//        }
+//        // TODO implements real page business
+//        return ResponseEntity.ok().body(employees);
+//    }
+
     @GetMapping
-    public ResponseEntity getAll(@RequestParam(name = "page", required = false) Integer page,
-                                 @RequestParam(name = "pageSize", required = false) Integer pageSize){
-        if(page == null && pageSize == null) {
+    public ResponseEntity search(@RequestParam(name = "page", required = false) Integer page,
+                                 @RequestParam(name = "pageSize", required = false) Integer pageSize,
+                                 @RequestParam(name = "gender", required = false) String gender){
+        if(gender != null ) {
+            List<Employee> employeeList = employees.stream().filter(employee -> employee.getGender().equals(gender)).collect(Collectors.toList());
+            return ResponseEntity.ok().body(employeeList);
+        }
+        if(page != null && pageSize != null) {
+            // TODO implements real page business
             return ResponseEntity.ok().body(employees);
         }
-        // TODO implements real page business
         return ResponseEntity.ok().body(employees);
     }
 }
