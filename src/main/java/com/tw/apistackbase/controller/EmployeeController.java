@@ -59,4 +59,17 @@ public class EmployeeController {
         employees.add(employee);
         return ResponseEntity.status(HttpStatus.CREATED).build();
     }
+
+    @PutMapping("/{id}")
+    public ResponseEntity update(@PathVariable int id, @RequestBody Employee employee) {
+        employees.stream().forEach(e -> {
+            if(e.getId() == id){
+                e.setAge(employee.getAge());
+                e.setGender(employee.getGender());
+                e.setName(employee.getName());
+                e.setSalary(employee.getSalary());
+            }
+        });
+        return ResponseEntity.ok().build();
+    }
 }
