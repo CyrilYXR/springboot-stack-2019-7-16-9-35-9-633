@@ -6,7 +6,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.*;
 
-@RestController
+@RestController()
 @RequestMapping("/companies")
 public class CompanyController {
 
@@ -65,6 +65,12 @@ public class CompanyController {
     @PutMapping("/{id}")
     public ResponseEntity update(@PathVariable int id, @RequestBody Company company){
         this.companies.put(id, company);
+        return ResponseEntity.ok().build();
+    }
+
+    @DeleteMapping("/{id}")
+    public ResponseEntity delete(@PathVariable int id) {
+        this.companies.remove(id);
         return ResponseEntity.ok().build();
     }
 

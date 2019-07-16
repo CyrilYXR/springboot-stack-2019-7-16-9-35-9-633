@@ -18,9 +18,8 @@ import org.springframework.test.web.servlet.MvcResult;
 import java.util.ArrayList;
 import java.util.List;
 
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
+import static org.hamcrest.Matchers.isEmptyOrNullString;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 import static org.hamcrest.Matchers.containsString;
@@ -142,6 +141,17 @@ public class CompanyControllerTest {
         assertEquals(2000, jsonObject.getInt("employeesNumber"));
         assertEquals(2, jsonObject.getJSONArray("employees")
                 .getJSONObject(0).getInt("id"));
+
+    }
+
+    @Test
+    public void shouldDeleteAllEmployeesBelongTheCompany() throws Exception {
+
+        this.mockMvc.perform(delete("/companies/1"))
+                .andExpect(status().isOk());
+
+        this.mockMvc.perform(get("/companies/1"))
+                .andExpect(status().isOk()).andExpect(content().string(isEmptyOrNullString()));
 
     }
 }
