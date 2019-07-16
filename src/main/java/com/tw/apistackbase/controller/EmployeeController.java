@@ -2,6 +2,7 @@ package com.tw.apistackbase.controller;
 
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -21,5 +22,11 @@ public class EmployeeController {
     @GetMapping
     public ResponseEntity getAll(){
         return ResponseEntity.ok().body(employees);
+    }
+
+    @GetMapping("/{id}")
+    public ResponseEntity get(@PathVariable int id){
+        Employee e = employees.stream().filter(employee -> employee.getId() == id).findFirst().get();
+        return ResponseEntity.ok().body(e);
     }
 }
