@@ -1,10 +1,10 @@
 package com.tw.apistackbase.controller;
 
 import com.alibaba.fastjson.JSON;
-import com.jayway.jsonpath.JsonPath;
+import com.tw.apistackbase.entity.Company;
+import com.tw.apistackbase.entity.Employee;
 import org.json.JSONArray;
 import org.json.JSONObject;
-import org.json.JSONString;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,7 +22,6 @@ import static org.hamcrest.Matchers.isEmptyOrNullString;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
-import static org.hamcrest.Matchers.containsString;
 import static org.junit.jupiter.api.Assertions.*;
 
 @RunWith(SpringRunner.class)
@@ -110,13 +109,13 @@ public class CompanyControllerTest {
                 .andExpect(status().isCreated())
                 .andReturn();
 
-        MvcResult mvcResult = this.mockMvc.perform(get("/companies"))
+        MvcResult mvcResult = this.mockMvc.perform(get("/companies/7"))
                 .andExpect(status().isOk())
                 .andReturn();
 
-        JSONArray jsonArray = new JSONArray(mvcResult.getResponse().getContentAsString());
+        JSONObject jsonObject = new JSONObject(mvcResult.getResponse().getContentAsString());
 
-        assertEquals(7, jsonArray.length());
+        assertEquals("abc", jsonObject.getString("companyName"));
 
     }
 
@@ -147,10 +146,10 @@ public class CompanyControllerTest {
     @Test
     public void shouldDeleteAllEmployeesBelongTheCompany() throws Exception {
 
-        this.mockMvc.perform(delete("/companies/1"))
+        this.mockMvc.perform(delete("/companies/2"))
                 .andExpect(status().isOk());
 
-        this.mockMvc.perform(get("/companies/1"))
+        this.mockMvc.perform(get("/companies/2"))
                 .andExpect(status().isOk()).andExpect(content().string(isEmptyOrNullString()));
 
     }

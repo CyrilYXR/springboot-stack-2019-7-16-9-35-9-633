@@ -1,9 +1,8 @@
 package com.tw.apistackbase.controller;
 import com.alibaba.fastjson.JSON;
-import com.jayway.jsonpath.JsonPath;
+import com.tw.apistackbase.entity.Employee;
 import org.json.JSONArray;
 import org.json.JSONObject;
-import org.json.JSONString;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,14 +13,10 @@ import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import static org.hamcrest.Matchers.isEmptyOrNullString;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
-import static org.hamcrest.Matchers.containsString;
 import static org.junit.jupiter.api.Assertions.*;
 
 @RunWith(SpringRunner.class)
@@ -140,13 +135,11 @@ public class EmployeeControllerTest {
     @Test
     public void shouldDeleteTheEmployee() throws Exception {
 
-        this.mockMvc.perform(delete("/employees/1"))
+        this.mockMvc.perform(delete("/employees/2"))
                 .andExpect(status().isOk());
 
-        MvcResult mvcResult = this.mockMvc.perform(get("/employees"))
-                .andExpect(status().isOk()).andReturn();
-        JSONArray jsonArray = new JSONArray(mvcResult.getResponse().getContentAsString());
-        assertEquals(1, jsonArray.length());
+        this.mockMvc.perform(get("/employees/2"))
+                .andExpect(status().isOk()).andExpect(content().string(isEmptyOrNullString()));
 
     }
 }
